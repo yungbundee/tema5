@@ -48,6 +48,10 @@
                    console.log(dyr);
 
 
+               let dest= document.querySelector("#liste");
+               dyr.forEach(dyr =>{
+                   dest.innerHTML += `${dyr.navn}, ${dyr.type}, ${dyr.billede}, ${dyr.levested} <br>`
+               })
 
 
 //
