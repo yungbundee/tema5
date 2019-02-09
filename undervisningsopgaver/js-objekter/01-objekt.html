@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+
+</head>
+
+<body>
+
+
+   <div id="dyr">
+       <h3>Gris</h3>
+       <p id="navn">Navn:</p>
+       <p id="type">Type:</p>
+
+       <p id="levested">Levested:</p>
+       <img src="" alt="">
+
+
+   </div>
+
+   <script>
+
+       let dyr={
+           "fornavn":"Lil Piggy",
+           "type":"Pattedyr",
+           "levested":"Svinefarm",
+           "billede":"http://helf-kea.dk/test/gris.png"
+
+
+       };
+
+       let dest = document.querySelector("#dyr");
+
+       dest.querySelector("#navn").textContent += dyr.fornavn;
+       dest.querySelector("#type").textContent += dyr.type;
+       dest.querySelector("#levested").textContent += dyr.levested;
+       dest.querySelector("img").src= dyr.billede;
+
+
+       console.log(dyr)
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>js-oevelse-1</title>
+    <style>
+        body {
+            color: burlywood;
+        }
+
+        #display {
+            width: 20vw;
+            height: 20vw;
+            border: 1px solid silver;
+            margin: 7vw;
+            padding: 1vw;
+        }
+        /*********************/
+    </style>
+
+</head>
+
+<body>
+    <div id="display"></div>
+
+    <script>
+
+        let faveTunes = ["Meanwhile In Rio", "Lost In Western Tokyo ",  "Portable Sunset", "Sound of Tha Police", "Endless Rhythm", "Rhythm Of The Night", "Dullami", "Up", "Redbone", "Alone"]; //et array erklæres
+faveTunes.forEach( tune => {
+		 document.querySelector("#display").innerHTML += `${tune} <br>`;
+	});
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <style>
+        .dyr {
+            border: 1px solid black;
+            margin: 5px;
+            padding: 5px;
+
+
+        }
+
+        #grid {
+
+
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+
+
+    <div id="liste">
+
+
+
+
+    </div>
+
+
+    <script>
+        let dyr = [{
+                "navn": "frø",
+                "type": "amfibie",
+                "levested": "swamp",
+                "billede": "https://vignette.wikia.nocookie.net/mugman/images/9/99/Chain_smokin_frog.png/revision/latest?cb=20150426130408"
+            },
+            {
+                "navn": "gris",
+                "type": "pattedyr",
+                "levested": "grisefarm",
+                "billede": "http://helf-kea.dk/test/gris.png"
+            },
+            {
+                "navn": "ræv",
+                "type": "pattedyr",
+                "levested": "skov",
+                "billede": "http://helf-kea.dk/test/fox.png"
+            },
+            {
+                "navn": "sild",
+                "type": "fisk",
+                "levested": "vand",
+                "billede": "http://helf-kea.dk/test/sild.jpg"
+            },
+            {
+                "navn": "krokodille",
+                "type": "krybdyr",
+                "levested": "jungle",
+                "billede": "http://helf-kea.dk/test/kroko.jpg"
+            }
+
+        ];
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+
+
+
+
+            let dest = document.querySelector("#liste");
+
+            function visDyr() {
+                dyr.forEach(dyr => {
+
+                    dest.innerHTML += `<div class="dyr">
+<h3>${dyr.navn}</h3>
+<img src = "${dyr.billede}" alt="${dyr.navn}">
+<p>Type:${dyr.type}</p>
+<p>Levested:${dyr.levested}</p>
+    </div>
+`;
+                })
+
+            }
+
+            visDyr();
+
+
+        }
+    </script>
+
+</body>
+</html>
