@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Babuska Bistro</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .retter {
+            margin: 5px;
+            padding: 5px;
+            background-color: #ffc760;
+
+        }
+
+        h1 {
+            text-align: center;
+
+        }
+
+        .valgt {
+            background-color: rgb(255, 199, 96);
+
+        }
+
+        img {
+            width: 30vw;
+
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+        }
+
+        .filter {
+            border: black;
+        }
+
+        .menu {
+            text-align: center;
+        }
+
+
+
+
+    </style>
+</head>
+
+
+<body>
+
+<header> <img style ="width: 100%" src="Tegnebr%C3%A6t%201-100.jpg" alt=""></header>
+
+
+    <div class="menu">
+        <h1>Alle</h1>
+        <button class="filter" data-hold="alle">Alle</button>
+        <button class="filter" data-hold="forretter">Forretter</button>
+        <button class="filter" data-hold="hovedretter">Hovedretter</button>
+        <button class="filter" data-hold="desserter">Desserter</button>
+        <button class="filter" data-hold="drikkevarer">Drikkevarer</button>
+
+
+    </div>
+    <div id="content">
+    <div id="liste"></div>
+    </div>
+
+    <script>
+        let retter = [];
+        let filter ="alle";
+
+
+
+        document.addEventListener("DOMContentLoaded", start);
+
+
+        function start() {
+            let dest = document.querySelector("#liste");
+            let temp = document.querySelector("template");
+
+            async function getJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                retter = await jsonData.json();
+
+                visRetter();
+            }
+
+            function visRetter() {
+                dest.innerHTML = "";
+
+                retter.forEach(eachRetter => {
+                    if (filter == "alle" || filter == eachRetter.kategori) {
+//                        dest.innerHTML +=
+
+
+
+                        let template =
+                            `<article class "#retter">
+ <img src="img/large/${eachRetter.billede}.jpg" alt="${eachRetter.navn}">
+
+                        <h2>${eachRetter.navn}</h2>
+
+                        <p>${eachRetter.kort}</p>
+<p>Pris: ${eachRetter.pris}</p>
+
+
+    </article>`;
+                        dest.insertAdjacentHTML("beforeend", template);
+                        dest.lastElementChild.addEventListener("click", () => {
+                            location.href = "singleView.html?id=" + eachRetter.id;
+
+                     });
+
+                    }
+                })
+            }
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+
+            function filtrering() {
+                filter = this.getAttribute("data-hold");
+                document.querySelector("h1").textContent = this.textContent;
+                document.querySelectorAll(".filter").forEach(elm => {
+                    elm.classList.remove("valgt");
+                })
+                this.classList.add("valgt");
+
+
+
+                visRetter();
+            }
+
+
+            getJson();
+        }
+    </script>
+</body>
+
+</html>

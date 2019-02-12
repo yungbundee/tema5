@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Babuska Bistro</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .retter {
+
+            width: 100%;
+            padding: 5px;
+            background-color: #ffc760;
+            position: fixed;
+
+
+
+        }
+
+        h1 {
+            text-align: center;
+
+        }
+
+        .valgt {
+            background-color: rgb(255, 199, 96);
+
+        }
+
+        img {
+            width: 30vw;
+
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+
+        }
+
+        .filter {
+            border: black;
+        }
+
+        .menu {
+            text-align: center;
+        }
+
+
+
+        #luk {
+            box-sizing: border-box;
+            text-align: right;
+            padding-right: 1em;
+
+        }
+
+        #luk button {
+            font-size: 2em;
+        }
+
+         #popup {
+            width: 100%;
+
+
+            display: none;
+            text-align: center;
+             position: fixed;
+
+
+
+
+        }
+
+
+
+    </style>
+</head>
+
+
+<body>
+       <div id="popup">
+        <div id="luk"><button>X</button></div>
+        <div id="indhold">
+
+
+        </div>
+
+    </div>
+
+
+
+<header> <img style ="width: 100%" src="Tegnebr%C3%A6t%201-100.jpg" alt=""></header>
+
+
+
+
+    <div class="menu">
+        <h1>Alle</h1>
+        <button class="filter" data-hold="alle">Alle</button>
+        <button class="filter" data-hold="forretter">Forretter</button>
+        <button class="filter" data-hold="hovedretter">Hovedretter</button>
+        <button class="filter" data-hold="desserter">Desserter</button>
+        <button class="filter" data-hold="drikkevarer">Drikkevarer</button>
+
+    </div>
+
+
+
+
+
+
+    <main>
+        <div id="liste"></div>
+
+    </main>
+
+    <script>
+        let retter = [];
+        let filter = "alle";
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let dest = document.querySelector("#liste");
+            let temp = document.querySelector("template");
+
+            async function getJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                retter = await jsonData.json();
+                visRetter();
+            }
+
+            function visRetter() {
+                dest.innerHTML = "";
+                retter.forEach(eachRetter => {
+                    if (filter == "alle" || filter == eachRetter.kategori) {
+
+                        let template =
+                             `<article class "#retter">
+ <img src="img/large/${eachRetter.billede}.jpg" alt="${eachRetter.navn}">
+
+                        <h2>${eachRetter.navn}</h2>
+
+                        <p>${eachRetter.kort}</p>
+<p>Pris: ${eachRetter.pris}</p>
+
+
+    </article>`;
+                        dest.insertAdjacentHTML("beforeend", template);
+
+                        dest.lastElementChild.addEventListener("click", åbn);
+
+
+                        function åbn() {
+                            document.querySelector("#indhold").innerHTML =
+                                `<article class="retter">
+<img src="img/large/${eachRetter.billede}.jpg" alt="${eachRetter.navn}">
+
+<h2>${eachRetter.navn}</h2>
+<p>${eachRetter.lang} </p>
+    </article>`;
+                            document.querySelector("#popup").style.display = "block";
+
+                        }
+                    }
+
+
+                })
+            }
+
+            document.querySelector("#luk button").addEventListener("click", () => {
+
+                document.querySelector("#popup").style.display = "none";
+
+            })
+
+            //function vispersoner slut
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+
+            function filtrering() {
+                filter = this.getAttribute("data-hold");
+                document.querySelector("h1").textContent = this.textContent;
+                document.querySelectorAll(".filter").forEach(elm => {
+                    elm.classList.remove("valgt");
+                })
+                this.classList.add("valgt");
+
+                visRetter();
+
+            }
+
+            getJson()
+        }
+
+    </script>
+
+
+
+
+</body>
+
+</html>
