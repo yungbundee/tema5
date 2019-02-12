@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <style>
+        #personer {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+        }
+
+        .billede {
+            align-items: center;
+            width: 20%;
+        }
+
+        .vis {
+            background-color: whitesmoke;
+            width: 80%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: solid black 1px;
+            margin: 10px;
+            padding: 5px;
+            box-shadow: 7px 7px grey;
+
+        }
+
+        .vis img {
+            width: 70%;
+        }
+
+        .menu {
+            text-align: center;
+        }
+
+        .valgt {
+            background-color: darkblue;
+            color: white;
+
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #singleview {
+            width: 100vw;
+            height: 100vh;
+
+            background-color: darkblue;
+
+            text-align: center;
+        }
+
+        #indhold {
+            box-sizing: border-box;
+            background-color: lightgray;
+            width: 90vw;
+            height: 90vh;
+            margin: auto;
+        }
+
+        #tilbage {
+            box-sizing: border-box;
+            text-align: right;
+            padding-right: 1em;
+        }
+
+        #tilbage button {
+            font-size: 2em;
+        }
+
+        html {}
+    </style>
+</head>
+
+<body>
+    <div id="singleview">
+        <div id="tilbage"><button>X</button></div>
+        <div id="indhold"></div>
+    </div>
+    <h1></h1>
+    <header>
+
+    </header>
+
+    <main>
+
+    </main>
+
+    <footer></footer>
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let github = urlParams.get("github");
+
+        let person;
+        let personer = [];
+        let filter = "alle";
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let dest = document.querySelector("#personer");
+            let temp = document.querySelector("template");
+
+            async function getJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+                personer = await jsonData.json();
+
+                personer.forEach(obj =>{
+                    if(obj.github==github){
+                        person=obj;
+                    }
+                })
+                console.log(person);
+
+                personer.sort((a, b) => {
+                    return a.alder - b.alder
+                })
+                personer.sort((a, b) => {
+                    return a.navn.localeCompare(b.navn);
+                })
+                åbn();
+
+
+            }
+
+                  function åbn() {
+                            document.querySelector("#indhold").innerHTML =
+                                `<article class="person">
+<img class="billede" src = "${person.billede}">
+<p>Hold: ${person.hold}, Alder:${person.alder} </p>
+<h3>${person.navn}´s historie</h3>
+<p>${person.historie} </p>
+    </article>`;
+
+                        }
+
+document.querySelector("#tilbage button").addEventListener("click",()=>{
+    location.href="05-kald.html"
+})
+
+
+
+
+
+
+            getJson()
+        }
+    </script>
+
+
+</body>
+
+</html>

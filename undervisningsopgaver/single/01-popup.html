@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hola</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .personer {
+            border: 5px solid black;
+            margin: 5px;
+            padding: 5px;
+            background-color: beige;
+
+
+
+        }
+
+        .valgt {
+
+            background-color: rgba(0, 0, 0, 0.44);
+
+
+        }
+
+        img {
+            width: 100px;
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        h1 {
+
+            text-align: center;
+
+        }
+
+        #popup {
+
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: lightgrey;
+        }
+
+        #indhold {
+            box-sizing: border-box;
+            background-color: white;
+            width: 90vw;
+            height: 90vh;
+            margin: auto;
+        }
+
+        #luk {
+            box-sizing: border-box;
+            text-align: right;
+            padding-right: 1em;
+        }
+
+        #luk button {
+            font-size: 1em;
+        }
+
+        html {
+            overflow-y: hidden;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+
+    <div class="menu">
+
+        <h1>Alle</h1>
+        <button class="filter valgt" data-hold="alle">Alle</button>
+        <button class="filter" data-hold="a">Hold A</button>
+        <button class="filter" data-hold="b">Hold B</button>
+
+    </div>
+    <div id="liste"></div>
+    <div id="popup">
+        <div id="luk"><button>X</button></div>
+        <div id="indhold"></div>
+
+    </div>
+
+    <script>
+        let allePersoner = [];
+        let filter = "b";
+
+        document.addEventListener("DOMContentLoaded", start);
+
+
+        function start() {
+            let dest = document.querySelector("#liste");
+            let temp = document.querySelector("template");
+
+            async function getJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+                allePersoner = await jsonData.json();
+                allePersoner.sort((a, b) => {
+                    return a.navn.localeCompare(b.navn);
+                })
+
+                visPersoner();
+            }
+
+            function visPersoner() {
+                dest.innerHTML = "";
+
+                allePersoner.forEach(allePersoner => {
+                    if (filter == "alle" || filter == allePersoner.hold) {
+                        dest.innerHTML += `
+            <div class="personer">
+                <h2>${allePersoner.navn}</h2>
+
+                <img src="${allePersoner.billede}" <p>Alder: ${allePersoner.alder}</p>
+
+
+            </div>`;
+                    }
+                })
+            }
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+
+            function filtrering() {
+                filter = this.getAttribute("data-hold");
+                document.querySelector("h1").textContent = this.textContent;
+                document.querySelectorAll(".filter").forEach(elm => {
+                    elm.classList.remove("valgt");
+                })
+                this.classList.add("valgt");
+                visPersoner();
+            }
+
+            getJson();
+        } <
+    </script>
+</body>
+
+</html>
